@@ -1,3 +1,4 @@
+// APP的配置项，桌面图标快捷入口
 {
   "short_name": "React App",
   "name": "Create React App Sample",

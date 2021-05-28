@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import reportWebVitals from './reportWebVitals'; // HTTPS协议下支持缓存，无网络状态下读取缓存数据
+
 
 ReactDOM.render(
   <React.StrictMode>
