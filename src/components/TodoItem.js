@@ -7,16 +7,17 @@ class TodoItem extends Component {
     this.handleDelItem = this.handleDelItem.bind(this)
   }
   render() {
+    const { content } = this.props
     return (
       <li onClick={this.handleDelItem}>
-        {this.props.content.index}-{this.props.content.item}
+        {content.index}-{content.item}
       </li>
     );
   }
   handleDelItem() {
-    console.log(this.props.content)
+    const { deleteItem, content } = this.props
     // 调用父组件方法删除item
-    this.props.deleteItem(this.props.content.index)
+    deleteItem(content.index)
   }
 }
 
