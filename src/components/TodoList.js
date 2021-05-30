@@ -24,7 +24,9 @@ class TodoList extends Component {
           onChange={this.handleInputChange}
         />
         <button onClick={this.handleBtnClick}>提交</button>
-        <ul>{this.getTodoItem()}</ul>
+        <ul ref={(ul) =>{this.ul = ul}}>
+          {this.getTodoItem()}
+        </ul>
       </div>
     );
   }
@@ -58,11 +60,15 @@ class TodoList extends Component {
     // });
   }
   handleBtnClick() {
+    // setState为异步函数
     this.setState((prevState) => {
       return {
         list: [...prevState.list, prevState.inputValue],
         inputValue: "",
       };
+    }, () => {
+      // 渲染成功回调函数
+      console.log(this.ul.querySelectorAll('li').length)
     });
   }
   handleDelItem(index) {
