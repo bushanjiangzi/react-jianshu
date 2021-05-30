@@ -7,6 +7,13 @@ class TodoItem extends Component {
     super(props);
     this.handleDelItem = this.handleDelItem.bind(this)
   }
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.content !== this.props.content) {
+      return true // 更新
+    } else {
+      return false // 不更新
+    }
+  }
   render() {
     const { content, required } = this.props
     return (
