@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import TodoItem from "./TodoItem";
 import "../assets/css/main.css";
+import axios from "axios";
 
 class TodoList extends Component {
   constructor(props) {
@@ -70,6 +71,21 @@ class TodoList extends Component {
       // 渲染成功回调函数
       console.log(this.ul.querySelectorAll('li').length)
     });
+  }
+  // 挂载完成
+  componentDidMount() {
+    axios.get('http://localhost:3000/api/todoList')
+      .then((res) => {
+        console.log(res)
+        this.setState(() => {
+          return {
+            list: res.data
+          }
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
   handleDelItem(index) {
     // immurable
