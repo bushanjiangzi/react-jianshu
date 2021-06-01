@@ -1,19 +1,23 @@
 import React, { Component } from "react";
-import TodoItem from "./TodoItem";
+import TodoItem from "../TodoItem";
 import "../assets/css/main.css";
 import axios from "axios";
-import store from '../store'
 import { Input, Button, List } from "antd";
 
+// const data = [
+//   "Racing car sprays burning fuel into crowd.",
+//   "Japanese princess to wed commoner.",
+//   "Australian walks 100km after outback crash.",
+//   "Man charged over missing wedding girl.",
+//   "Los Angeles battles huge wildfires.",
+// ];
 class TodoList extends Component {
   constructor(props) {
     super(props);
-    console.log(store.getState())
-    this.state = store.getState()
-    // this.state = {
-    //   inputValue: "",
-    //   list: ["学习vue", "学习react"],
-    // };
+    this.state = {
+      inputValue: "",
+      list: ["学习vue", "学习react"],
+    };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleBtnClick = this.handleBtnClick.bind(this);
     this.handleDelItem = this.handleDelItem.bind(this);
@@ -23,6 +27,12 @@ class TodoList extends Component {
       <div className="TodoList" style={{ margin: "10px" }}>
         {/* 注释 */}
         <label htmlFor="insertArea">输入内容：</label>
+        {/* <input
+          id="insertArea"
+          value={this.state.inputValue}
+          onChange={this.handleInputChange}
+        />
+        <button onClick={this.handleBtnClick}>提交</button> */}
         <Input
           placeholder="todo info"
           style={{ width: "300px", margin: "10px" }}
@@ -33,12 +43,21 @@ class TodoList extends Component {
         <Button type="primary" onClick={this.handleBtnClick}>
           提 交
         </Button>
+        {/* <ul
+          ref={(ul) => {
+            this.ul = ul;
+          }}
+        >
+          {this.getTodoItem()}
+        </ul> */}
         <List
           style={{ width: '300px'}}
           size="small"
           header={<div>Header</div>}
           footer={<div>Footer</div>}
           bordered
+          // dataSource={data}
+          // renderItem={(item) => <List.Item>{item}</List.Item>}
         >
           {this.getTodoItem()}
         </List>
@@ -47,19 +66,32 @@ class TodoList extends Component {
   }
   getTodoItem() {
     return this.state.list.map((item, index) => {
+      // 设置HTML文本，不转义
+      // dangerouslySetInnerHTML={{__html: item}}
       return (
         <TodoItem
           key={index}
           content={{ item: item, index: index }}
+          // 绑定this给子组件，方便子组件调用父组件方法
           deleteItem={this.handleDelItem}
         ></TodoItem>
       );
     });
   }
   handleInputChange(e) {
+    // 旧版写法
+    // this.setState({
+    //   inputValue: e.target.value,
+    // });
+    // 新版写法
     this.setState(() => ({
       inputValue: e.target.value,
     }));
+    // this.setState(() => {
+    //   return {
+    //     inputValue: e.target.value,
+    //   };
+    // });
   }
   handleBtnClick() {
     // setState为异步函数
@@ -72,6 +104,7 @@ class TodoList extends Component {
       },
       () => {
         // 渲染成功回调函数
+        // console.log(this.ul.querySelectorAll("li").length);
       }
     );
   }
