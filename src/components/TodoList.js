@@ -1,19 +1,20 @@
 import React, { Component } from "react";
 import TodoItem from "./TodoItem";
 import "../assets/css/main.css";
-import axios from "axios";
+// import axios from "axios";
 import store from '../store'
 import { Input, Button, List } from "antd";
+import { getChangeInputValue, getAddTodoItem, getDeleteTodoItem } from '../store/creatActions'
 
 class TodoList extends Component {
   constructor(props) {
     super(props);
-    console.log(store.getState())
+    // console.log(store.getState())
+    // 初次获取store数据
     this.state = store.getState()
-    // this.state = {
-    //   inputValue: "",
-    //   list: ["学习vue", "学习react"],
-    // };
+    // `store.subscribe`j监听store数据变化手动更新重新获取store数据
+    store.subscribe(this.handleStoreChange.bind(this))
+    // 其他事件
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleBtnClick = this.handleBtnClick.bind(this);
     this.handleDelItem = this.handleDelItem.bind(this);
@@ -21,7 +22,6 @@ class TodoList extends Component {
   render() {
     return (
       <div className="TodoList" style={{ margin: "10px" }}>
-        {/* 注释 */}
         <label htmlFor="insertArea">输入内容：</label>
         <Input
           placeholder="todo info"
@@ -57,50 +57,32 @@ class TodoList extends Component {
     });
   }
   handleInputChange(e) {
-    this.setState(() => ({
-      inputValue: e.target.value,
-    }));
+    const action = getChangeInputValue(e.target.value)
+    store.dispatch(action)
   }
   handleBtnClick() {
-    // setState为异步函数
-    this.setState(
-      (prevState) => {
-        return {
-          list: [...prevState.list, prevState.inputValue],
-          inputValue: "",
-        };
-      },
-      () => {
-        // 渲染成功回调函数
-      }
-    );
+    const action = getAddTodoItem()
+    store.dispatch(action)
   }
   // 挂载完成
   componentDidMount() {
-    axios
-      .get("http://localhost:3000/api/todoList")
-      .then((res) => {
-        console.log(res);
-        this.setState(() => {
-          return {
-            list: res.data,
-          };
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // axios
+    //   .get("http://localhost:3000/api/todoList")
+    //   .then((res) => {
+    //     console.log(res);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   }
+  // 删除item
   handleDelItem(index) {
-    // immurable
-    // state 不允许我们直接修改，这会影响到性能优化
-    this.setState((prevState) => {
-      const list = [...prevState.list];
-      list.splice(index, 1);
-      return {
-        list,
-      };
-    });
+    const action = getDeleteTodoItem(index)
+    store.dispatch(action)
+  }
+  // 处理store更新
+  handleStoreChange() {
+    this.setState(store.getState())
   }
 }
 
