@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import TodoItem from "../TodoItem";
+import TodoItem from "./TodoItem";
 import "../assets/css/main.css";
 import axios from "axios";
 import { Input, Button, List } from "antd";

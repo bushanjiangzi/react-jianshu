@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import TodoItem from "./TodoItem";
 import "../assets/css/main.css";
-// import axios from "axios";
 import store from '../store'
-import { Input, Button, List } from "antd";
-import { getChangeInputValue, getAddTodoItem, getDeleteTodoItem } from '../store/creatActions'
+import axios from 'axios'
+import { getChangeInputValue, getAddTodoItem, getDeleteTodoItem, initListAction } from '../store/creatActions'
+import TodoListUI from './TodoListUI'
 
 class TodoList extends Component {
   constructor(props) {
@@ -21,40 +20,26 @@ class TodoList extends Component {
   }
   render() {
     return (
-      <div className="TodoList" style={{ margin: "10px" }}>
-        <label htmlFor="insertArea">输入内容：</label>
-        <Input
-          placeholder="todo info"
-          style={{ width: "300px", margin: "10px" }}
-          id="insertArea"
-          value={this.state.inputValue}
-          onChange={this.handleInputChange}
-        />
-        <Button type="primary" onClick={this.handleBtnClick}>
-          提 交
-        </Button>
-        <List
-          style={{ width: '300px'}}
-          size="small"
-          header={<div>Header</div>}
-          footer={<div>Footer</div>}
-          bordered
-        >
-          {this.getTodoItem()}
-        </List>
-      </div>
+      <TodoListUI
+        inputValue={this.state.inputValue}
+        list={this.state.list}
+        handleInputChange={this.handleInputChange}
+        handleBtnClick={this.handleBtnClick}
+        handleDelItem={this.handleDelItem}
+      ></TodoListUI>
     );
   }
-  getTodoItem() {
-    return this.state.list.map((item, index) => {
-      return (
-        <TodoItem
-          key={index}
-          content={{ item: item, index: index }}
-          deleteItem={this.handleDelItem}
-        ></TodoItem>
-      );
-    });
+  // 挂载完成
+  componentDidMount() {
+    axios.get('../../json/todoList.json')
+      .then((res) => {
+        console.log(res)
+        const action = initListAction(res.data.list)
+        store.dispatch(action)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
   handleInputChange(e) {
     const action = getChangeInputValue(e.target.value)
@@ -64,17 +49,6 @@ class TodoList extends Component {
     const action = getAddTodoItem()
     store.dispatch(action)
   }
-  // 挂载完成
-  componentDidMount() {
-    // axios
-    //   .get("http://localhost:3000/api/todoList")
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-  }
   // 删除item
   handleDelItem(index) {
     const action = getDeleteTodoItem(index)
@@ -82,6 +56,7 @@ class TodoList extends Component {
   }
   // 处理store更新
   handleStoreChange() {
+    // console.log(store.getState())
     this.setState(store.getState())
   }
 }
