@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import "../assets/css/main.css";
 import store from '../store'
-import axios from 'axios'
-import { getChangeInputValue, getAddTodoItem, getDeleteTodoItem, initListAction } from '../store/creatActions'
+// import axios from 'axios'
+import { getChangeInputValue, getAddTodoItem, getDeleteTodoItem, getTodoList } from '../store/creatActions'
 import TodoListUI from './TodoListUI'
 
 class TodoList extends Component {
@@ -31,15 +31,21 @@ class TodoList extends Component {
   }
   // 挂载完成
   componentDidMount() {
-    axios.get('../../json/todoList.json')
-      .then((res) => {
-        console.log(res)
-        const action = initListAction(res.data.list)
-        store.dispatch(action)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    /**
+     * redux-saga
+     * redux-thunk
+     */
+    const action = getTodoList()
+    store.dispatch(action)
+    // axios.get('../../json/todoList.json')
+    //   .then((res) => {
+    //     console.log(res)
+    //     const action = initListAction(res.data.list)
+    //     store.dispatch(action)
+    //   })
+    //   .catch((err) => {
+    //     console.log(err)
+    //   })
   }
   handleInputChange(e) {
     const action = getChangeInputValue(e.target.value)

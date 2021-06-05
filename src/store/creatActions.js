@@ -1,8 +1,11 @@
+import axios from 'axios'
+// import store from '../store'
 import {
   CHANGE_INPUT_VALUE,
   ADD_TODO_ITEM,
   DELETE_TODO_ITEM,
-  INIT_LIST_ACTION
+  INIT_LIST_ACTION,
+  // GET_INIT_LIST
 } from './actionTypes'
 
 const getChangeInputValue = (value) => ({
@@ -22,9 +25,30 @@ const initListAction = (value) => ({
   value
 })
 
+// redux-thunk
+const getTodoList = () => {
+  return (dispatch) => {
+    axios.get('../../json/todoList.json')
+    .then((res) => {
+      console.log(res)
+      const action = initListAction(res.data.list)
+      dispatch(action)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
+}
+
+// redux-saga
+// const getTodoList = (value) => ({
+//   type: GET_INIT_LIST
+// })
+
 export {
   getChangeInputValue,
   getAddTodoItem,
   getDeleteTodoItem,
-  initListAction
+  initListAction,
+  getTodoList
 }

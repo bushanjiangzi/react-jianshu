@@ -22,11 +22,13 @@ const TodoListUI = (props) => {
         footer={<div>Footer</div>}
         bordered
         dataSource={props.list}
-        renderItem={(item, index) => (<List.Item onClick={(index) => {props.handleDelItem(index)}}>{index}-{item}</List.Item>)}
+        renderItem={(item, index) => (<List.Item onClick={() => {props.handleDelItem(index)}}>{index}-{item}</List.Item>)}
       />
     </div>
   );
 }
+
+export default TodoListUI;
 
 // class TodoListUI extends Component {
 //   render() {
@@ -54,5 +56,3 @@ const TodoListUI = (props) => {
 //     );
 //   }
 // }
-
-export default TodoListUI;
