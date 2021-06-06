@@ -1,43 +1,14 @@
-import {
-  CHANGE_INPUT_VALUE,
-  ADD_TODO_ITEM,
-  DELETE_TODO_ITEM,
-  // INIT_LIST_ACTION
-} from './actionTypes'
+import { combineReducers } from 'redux-immutable';
+import { reducer as headerReducer } from '../components/header/store';
+// import { reducer as homeReducer } from '../pages/home/store';
+// import { reducer as detailReducer } from '../pages/detail/store';
+// import { reducer as loginReducer } from '../pages/login/store';
 
-const defaultState = {
-  inputValue: "",
-  list: ["学习vue", "学习react"],
-  // list: [],
-};
+const reducer = combineReducers({
+	header: headerReducer,
+	// home: homeReducer,
+	// detail: detailReducer,
+	// login: loginReducer
+});
 
-// reducer可以接受state，但是不能直接改变state
-const reducer = (state = defaultState, action) => {
-  // console.log(action)
-  if (action.type === CHANGE_INPUT_VALUE) {
-    const newState = JSON.parse(JSON.stringify(state))
-    newState.inputValue = action.value
-    return newState
-  }
-  if (action.type === ADD_TODO_ITEM) {
-    const newState = JSON.parse(JSON.stringify(state))
-    if (newState.inputValue) {
-      newState.list.push(newState.inputValue)
-    }
-    newState.inputValue = ''
-    return newState
-  }
-  if (action.type === DELETE_TODO_ITEM) {
-    const newState = JSON.parse(JSON.stringify(state))
-    newState.list.splice(action.index, 1)
-    return newState
-  }
-  // if (action.type === INIT_LIST_ACTION) {
-  //   const newState = JSON.parse(JSON.stringify(state))
-  //   newState.list = action.value
-  //   return newState
-  // }
-  return state;
-};
-
-export default reducer
+export default reducer;
