@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import { actionCreators } from './store';
-// import { actionCreators as loginActionCreators } from '../../pages/login/store'
+import { actionCreators as loginActionCreators } from '../../pages/login/store'
 import {
 	HeaderWrapper,
 	Logo,
@@ -152,7 +152,7 @@ const mapDispathToProps = (dispatch) => {
 			}
 		},
 		logout() {
-			// dispatch(loginActionCreators.logout())
+			dispatch(loginActionCreators.logout())
 		}
 	}
 }
