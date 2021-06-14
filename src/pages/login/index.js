@@ -17,7 +17,7 @@ class Login extends PureComponent {
 					</LoginBox>
 				</LoginWrapper>
 			)
-		}else {
+		} else {
 			return <Redirect to='/'/>
 		}
 	}
